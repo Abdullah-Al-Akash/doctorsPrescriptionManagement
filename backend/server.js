@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/patients", require("./routes/patient.routes"));
 app.get("/health", (req, res) => {
   res.send("Server running");
 });
