@@ -4,28 +4,30 @@ const router = express.Router();
 const { getDB } = require("../db");
 
 
-// ADD PATIENT
+// ADD OT
 router.post("/", async (req, res) => {
   const db = getDB();
 
-  const patient = req.body;
+  const otData = req.body;
 
-  const result = await db.collection("patients").insertOne(patient);
+  const result = await db
+    .collection("ot")
+    .insertOne(otData);
 
   res.send(result);
 });
 
 
-// GET ALL PATIENTS
+// GET ALL OT
 router.get("/", async (req, res) => {
   const db = getDB();
 
-  const patients = await db
-    .collection("patients")
+  const otList = await db
+    .collection("ot")
     .find()
     .toArray();
 
-  res.send(patients);
+  res.send(otList);
 });
 
 module.exports = router;

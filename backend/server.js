@@ -9,6 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/patients", require("./routes/patient.routes"));
+app.use("/api/ot", require("./routes/ot.routes"));
+app.use(
+  "/api/operation-notes",
+  require("./routes/operationNote.routes")
+);
+app.use("/api/prescriptions", require("./routes/prescription.routes"));
+app.use("/api/advice", require("./routes/advice.routes"));
+app.use("/api/reports", require("./routes/report.routes"));
 app.get("/health", (req, res) => {
   res.send("Server running");
 });

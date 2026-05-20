@@ -4,28 +4,30 @@ const router = express.Router();
 const { getDB } = require("../db");
 
 
-// ADD PATIENT
+// CREATE PRESCRIPTION
 router.post("/", async (req, res) => {
   const db = getDB();
 
-  const patient = req.body;
+  const prescription = req.body;
 
-  const result = await db.collection("patients").insertOne(patient);
+  const result = await db
+    .collection("prescriptions")
+    .insertOne(prescription);
 
   res.send(result);
 });
 
 
-// GET ALL PATIENTS
+// GET ALL PRESCRIPTIONS
 router.get("/", async (req, res) => {
   const db = getDB();
 
-  const patients = await db
-    .collection("patients")
+  const data = await db
+    .collection("prescriptions")
     .find()
     .toArray();
 
-  res.send(patients);
+  res.send(data);
 });
 
 module.exports = router;
