@@ -4,7 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 import Patients from "./pages/Patients";
 import OT from "./pages/OT";
 import Prescription from "./pages/Prescription";
-import { Reports } from './pages/Reports';
+import Reports from './pages/Reports';
 
 export default function App() {
   return (
