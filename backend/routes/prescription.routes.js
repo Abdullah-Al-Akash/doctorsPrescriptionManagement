@@ -30,4 +30,19 @@ router.get("/", async (req, res) => {
   res.send(data);
 });
 
+// 🔥 NEW: history by patient
+router.get("/patient/:regNo", async (req, res) => {
+const db = getDB();
+
+const regNo = req.params.regNo;
+
+const data = await db.collection("prescriptions")
+.find({ patientRegistrationNo: regNo })
+.sort({ _id: -1 })
+.toArray();
+
+res.send(data);
+});
+
+
 module.exports = router;

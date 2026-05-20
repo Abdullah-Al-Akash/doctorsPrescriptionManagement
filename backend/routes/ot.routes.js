@@ -29,5 +29,17 @@ router.get("/", async (req, res) => {
 
   res.send(otList);
 });
+router.get("/patient/:regNo", async (req, res) => {
+const db = getDB();
+
+const regNo = req.params.regNo;
+
+const data = await db.collection("ot")
+.find({ patientRegistrationNo: regNo })
+.sort({ otDate: -1 }) // latest first
+.toArray();
+
+res.send(data);
+});
 
 module.exports = router;

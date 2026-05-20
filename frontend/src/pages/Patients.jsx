@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import { doctors } from "../data/doctors";
 
 export default function Patients() {
   const [patients, setPatients] = useState([]);
@@ -10,6 +11,7 @@ export default function Patients() {
     name: "",
     age: "",
     gender: "",
+    doctorId: ""
   });
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function Patients() {
         name: "",
         age: "",
         gender: "",
+        doctorId: ""
       });
 
       fetchPatients();
@@ -63,23 +66,46 @@ export default function Patients() {
         <h1 className="text-2xl font-bold">Patients</h1>
       </div>
 
-      {/* SEARCH */}
-      <div>
+      {/* SEARCH BAR (clean upgraded) */}
+      <div className="relative">
         <input
           type="text"
-          placeholder="Search by name or reg no..."
+          placeholder="Search patient by name or reg no..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="border p-2 rounded w-full"
         />
+
+        {search && (
+          <div className="absolute w-full bg-white border mt-1 rounded shadow max-h-60 overflow-y-auto z-50">
+
+            {filteredPatients.length === 0 && (
+              <div className="p-2 text-gray-400">
+                No patient found
+              </div>
+            )}
+
+            {filteredPatients.map((p, i) => (
+              <div
+                key={i}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => setSearch(p.name)}
+              >
+                <div className="font-medium">{p.name}</div>
+                <div className="text-xs text-gray-500">
+                  {p.registrationNo}
+                </div>
+              </div>
+            ))}
+
+          </div>
+        )}
       </div>
 
       {/* FORM */}
       <div className="bg-white p-4 rounded-xl shadow">
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-4 gap-3"
-        >
+        <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-3">
+
           <input
             name="registrationNo"
             placeholder="Reg No"
@@ -104,6 +130,7 @@ export default function Patients() {
             className="border p-2 rounded"
           />
 
+          {/* GENDER */}
           <select
             name="gender"
             value={form.gender}
@@ -115,37 +142,63 @@ export default function Patients() {
             <option value="female">Female</option>
           </select>
 
+          {/* DOCTOR ASSIGN (NEW) */}
+          <select
+            name="doctorId"
+            value={form.doctorId}
+            onChange={handleChange}
+            className="border p-2 rounded col-span-4"
+          >
+            <option value="">Assign Doctor</option>
+
+            {doctors.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name} ({d.specialty})
+              </option>
+            ))}
+          </select>
+
           <button
             type="submit"
             className="col-span-4 bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
           >
             Add Patient
           </button>
+
         </form>
       </div>
 
       {/* TABLE */}
       <div className="bg-white p-4 rounded-xl shadow">
         <table className="w-full text-left">
+
           <thead className="border-b">
             <tr>
               <th className="p-2">Reg No</th>
               <th className="p-2">Name</th>
               <th className="p-2">Age</th>
               <th className="p-2">Gender</th>
+              <th className="p-2">Doctor</th>
             </tr>
           </thead>
 
           <tbody>
             {filteredPatients.map((p, i) => (
               <tr key={i} className="border-b">
+
                 <td className="p-2">{p.registrationNo}</td>
                 <td className="p-2">{p.name}</td>
                 <td className="p-2">{p.age}</td>
                 <td className="p-2">{p.gender}</td>
+
+                <td className="p-2">
+                  {doctors.find(d => d.id === p.doctorId)?.name || "Not Assigned"}
+                </td>
+
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
